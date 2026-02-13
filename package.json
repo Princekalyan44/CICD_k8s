@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-user-input-app",
+  "version": "1.0.0",
+  "description": "A simple Node.js application that takes user input",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "nodejs",
+    "user-input",
+    "cicd",
+    "docker"
+  ],
+  "author": "Princekalyan44",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
