@@ -1,0 +1,60 @@
+# Pre-commit hooks configuration for Node.js + Docker project
+# Install: pip install pre-commit && pre-commit install
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Remove trailing whitespace
+      - id: end-of-file-fixer
+        name: Fix end of files
+      - id: check-yaml
+        name: Check YAML syntax
+        args: ['--allow-multiple-documents']
+      - id: check-json
+        name: Check JSON syntax
+      - id: check-added-large-files
+        name: Check for large files
+        args: ['--maxkb=500']
+      - id: detect-private-key
+        name: Detect private keys
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+      - id: mixed-line-ending
+        name: Fix mixed line endings
+
+  # Dockerfile linting
+  - repo: https://github.com/hadolint/hadolint
+    rev: v2.12.0
+    hooks:
+      - id: hadolint-docker
+        name: Lint Dockerfile
+        args: ['--ignore', 'DL3018']
+
+  # Secret detection
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detect secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package-lock.json
+
+  # JavaScript/Node.js specific
+  - repo: local
+    hooks:
+      - id: npm-test
+        name: Run npm tests
+        entry: npm test
+        language: system
+        pass_filenames: false
+        files: \.(js|json)$
+      
+      - id: check-package-json
+        name: Validate package.json
+        entry: bash -c 'node -e "JSON.parse(require(\"fs\").readFileSync(\"package.json\"))"'
+        language: system
+        files: package.json
+        pass_filenames: false
